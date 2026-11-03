@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Walter Koenig, 1936–2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one screen. A vector-display starship holds the sky; a single readout sits in the lower left and carries the life. */
+:root {
+  color-scheme: dark;
+  --void: #0b0703;
+  --panel: rgba(14, 9, 3, 0.8);
+  --phosphor: #ffc45e;
+  --phosphor-dim: #c4924a;
+  --text: #fff1d9;
+  --rule: #5c4520;
+  --font-instrument: "Michroma", "Eurostile", "Arial Narrow", sans-serif;
+  --font-voice: "Spectral", Georgia, "Times New Roman", serif;
+}
+[hidden] { display: none !important; }
+body { margin: 0; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-voice);
+  font-size: 18px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+#sky { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+.deck {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: calc(16px + env(safe-area-inset-top, 0px)) calc(16px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+@media (min-width: 800px) {
+  .deck { padding-left: max(5vw, env(safe-area-inset-left, 0px)); padding-bottom: 6vh; }
+}
+.readout {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 31rem;
+  min-width: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  background: var(--panel);
+  border-top: 1px solid var(--phosphor-dim);
+  animation: rise 700ms ease-out;
+}
+@keyframes rise { from { opacity: 0.2; } to { opacity: 1; } }
+
+.label {
+  margin: 0;
+  font-family: var(--font-instrument);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--phosphor);
+  font-variant-numeric: tabular-nums;
+}
+h1, .name {
+  margin: 0;
+  font-family: var(--font-instrument);
+  font-weight: 400;
+  font-size: clamp(1.45rem, 4.4vw, 2.1rem);
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  color: var(--phosphor);
+  text-shadow: 0 0 18px rgba(255, 196, 94, 0.45);
+  text-wrap: balance;
+}
+p { margin: 0; }
+.entry { margin: 0; min-height: 8.2em; }
+.long { font-size: clamp(1.3rem, 4.5vw, 1.8rem) !important; }
+blockquote { margin: 0; font-size: clamp(1.6rem, 6vw, 2.3rem); font-style: italic; line-height: 1.2; }
+cite { display: block; margin-top: 6px; font-size: 0.85rem; font-style: normal; color: var(--phosphor-dim); }
+
+button {
+  font-family: var(--font-instrument);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--phosphor);
+  background: transparent;
+  border: 1px solid var(--phosphor-dim);
+  padding: 11px 14px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: rgba(255, 196, 94, 0.14); }
+button:disabled { opacity: 0.35; cursor: default; }
+:focus-visible { outline: 2px solid var(--phosphor); outline-offset: 2px; }
+#engage { align-self: flex-start; font-size: 0.85rem; padding: 14px 30px; color: var(--void); background: var(--phosphor); border-color: var(--phosphor); }
+#engage:hover { background: var(--text); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.controls button { flex: 1 1 0; min-width: 0; padding-inline: 6px; }
+.ticks { display: flex; gap: 3px; }
+.tick { flex: 1 1 0; min-width: 0; height: 28px; padding: 0; border: 0; position: relative; }
+.tick::before, .tick::after { content: ""; position: absolute; left: 0; right: 0; top: 12px; height: 4px; }
+.tick::before { background: var(--rule); }
+.tick::after { background: var(--phosphor); transform: scaleX(var(--fill, 0)); transform-origin: left; }
+
+.gifts { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.gifts a { color: var(--phosphor); }
+details { font-size: 0.85rem; color: var(--phosphor-dim); }
+summary { cursor: pointer; }
+details ul { margin: 8px 0 0; padding-left: 18px; }
+details a { color: var(--phosphor-dim); }
+.small { font-size: 0.85rem; color: var(--phosphor-dim); }
+
+@media (prefers-reduced-motion: reduce) { .readout { animation: none; } }
+</style>
+</head>
+<body>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main class="deck">
+  <section class="readout" id="rest" aria-labelledby="rest-name">
+    <p class="label">In memory</p>
+    <h1 id="rest-name">Walter Koenig</h1>
+    <p>14 September 1936 – 25 October 2026</p>
+    <p>A life in fifteen log entries, from Chicago to the navigator’s chair of the Enterprise and beyond.</p>
+    <button id="engage" type="button">Lay in a course</button>
+  </section>
+
+  <section class="readout" id="log" aria-label="Log entries" hidden>
+    <p class="label" id="log-meta"></p>
+    <p class="entry" id="log-text" aria-live="polite"></p>
+    <div class="ticks" id="ticks"></div>
+    <div class="controls">
+      <button id="prev" type="button">Back</button>
+      <button id="pause" type="button">Pause</button>
+      <button id="next" type="button">Next</button>
+    </div>
+  </section>
+
+  <section class="readout" id="end" aria-labelledby="end-name" hidden>
+    <p class="name" id="end-name">Walter Koenig</p>
+    <p class="label">14 September 1936 – 25 October 2026</p>
+    <blockquote class="long">“I’m of the opinion that adventure is still a very enticing and exciting option.”
+      <cite>Walter Koenig, speaking to the Associated Press, 1995</cite>
+    </blockquote>
+    <p>“Walter was more than Chekov. He was a writer, a teacher, a thoughtful man, and a loyal friend.”</p>
+    <p class="small">George Takei</p>
+    <details>
+      <summary>Sources</summary>
+      <ul>
+        <li><a href="https://au.variety.com/?p=41960" target="_blank" rel="noopener">Variety obituary</a></li>
+        <li><a href="https://www.bostonglobe.com/2026/10/26/arts/walter-koenig-died/?p1=SCMenu_Article" target="_blank" rel="noopener">Associated Press obituary, Boston Globe</a></li>
+        <li><a href="https://kuwaittimes.com/article/52503/lifestyle/koenig-who-played-original-chekov-on-star-trek-dies-at-90/amp" target="_blank" rel="noopener">AFP obituary, Kuwait Times</a></li>
+        <li><a href="https://www.syfy.com/syfy-wire/star-trek-pavel-chekov-actor-walter-koenig-dead-at-90" target="_blank" rel="noopener">SYFY obituary</a></li>
+        <li><a href="https://www.comicsbeat.com/walter-koenig-legendary-star-trek-star-and-writer-dead-at-90/" target="_blank" rel="noopener">The Beat: his writing credits</a></li>
+        <li><a href="https://openthemagazine.com/world/walter-koenig-19362026-the-star-trek-navigator-who-made-a-bigger-world-feel-possible" target="_blank" rel="noopener">Open: profile and Bester interview</a></li>
+        <li><a href="https://mg.co.za/article/2007-07-24-dont-klingon-to-power-star-trek-tells-burma-junta" target="_blank" rel="noopener">Mail &amp; Guardian: Burma, 2007</a></li>
+        <li><a href="https://www.hollywoodreporter.com/news/star-trek-chekov-walter-koenig-walk-of-fame-star-368982" target="_blank" rel="noopener">The Hollywood Reporter: Walk of Fame</a></li>
+        <li><a href="https://www.startrek.com/news/walter-koenig-receives-his-star" target="_blank" rel="noopener">StarTrek.com: the star ceremony</a></li>
+      </ul>
+    </details>
+    <p class="small">A fan tribute. Not connected to any studio or estate.</p>
+    <button id="again" type="button">Watch again</button>
+  </section>
+</main>
+
+<script>
+(() => {
+  const ENTRIES = [
+    [
+      "14 September 1936",
+      "Born in Chicago and raised in Manhattan. He does his first stage work at Fieldston High School."
+    ],
+    [
+      "1958",
+      "Graduates from UCLA with a psychology degree, having started as a pre-med student at Grinnell College. He plans to become a psychiatrist until a professor urges him towards acting, and he goes on to train at New York’s Neighborhood Playhouse."
+    ],
+    [
+      "1962",
+      "Makes his television debut in an uncredited role on <em>Combat!</em> Guest parts follow on <em>Ben Casey</em>, <em>The Alfred Hitchcock Hour</em>, <em>Gidget</em> and <em>I Spy</em>."
+    ],
+    [
+      "1965",
+      "Marries Judy Levitt, who later appears in the <em>Star Trek</em> films. They stay together until her death in 2022."
+    ],
+    [
+      "1967",
+      "Joins <em>Star Trek</em> at the start of its second season as Ensign Pavel Chekov, the young Russian navigator. He is 30, and the only member of the bridge crew from the Communist bloc."
+    ],
+    [
+      "1969–1973",
+      "The series ends and he is “totally at sea.” He turns to writing, and <em>The Infinite Vulcan</em>, his script for the animated <em>Star Trek</em>, reaches the screen in 1973. More scripts follow, for <em>Land of the Lost</em>, <em>Family</em> and <em>The Incredible Hulk</em>."
+    ],
+    [
+      "1979",
+      "Returns as Chekov in <em>Star Trek: The Motion Picture</em>, the first of seven films that run to 1994. The next year he publishes <em>Chekov’s Enterprise</em>, his journal of the production."
+    ],
+    [
+      "1982",
+      "Chekov stands at the centre of the story in <em>Star Trek II: The Wrath of Khan</em>."
+    ],
+    [
+      "1994",
+      "Plays the Psi Cop Alfred Bester in 12 episodes of <em>Babylon 5</em>, through to 1998. He calls it “a more exciting opportunity and a more challenging role.”"
+    ],
+    [
+      "2007",
+      "Visits refugees on the Thai-Burmese border with the US Campaign for Burma and asks fans to help. “Star Trek fans are very receptive to humanitarian causes.”"
+    ],
+    [
+      "2008",
+      "Stands as best man at George Takei’s wedding to Brad Altman."
+    ],
+    [
+      "2010",
+      "His son Andrew, an actor and editor, dies at 41."
+    ],
+    [
+      "10 September 2012",
+      "Receives his star on the Hollywood Walk of Fame, the last of the seven main <em>Star Trek</em> cast members to get one. “The majority of people who wanted me on the star were the fans.”"
+    ],
+    [
+      "2026",
+      "Still acting. His short film <em>Mr. Fleischmann</em> wins him Best Actor at the Independent Shorts Awards, according to his representatives."
+    ],
+    [
+      "25 October 2026",
+      "Dies at his home in North Hollywood, aged 90, with his daughter and niece beside him."
+    ]
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const canvas = $("sky");
+  const ctx = canvas.getContext("2d");
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const TAU = Math.PI * 2;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = (v) => v * v * (3 - 2 * v);
+
+  /* ---------- Ship: lofted wire sections, nose along +z ---------- */
+  const segs = [];
+  function seg(a, b) { segs.push(a[0], a[1], a[2], b[0], b[1], b[2]); }
+  function loft(sections, every) {
+    sections.forEach((ring, s) => {
+      ring.forEach((p, i) => {
+        seg(p, ring[(i + 1) % ring.length]);
+        if (s < sections.length - 1 && i % every === 0) seg(p, sections[s + 1][i]);
+      });
+    });
+  }
+  const ellipseZ = (z, cx, cy, rx, ry, n) => Array.from({ length: n }, (_, i) => {
+    const a = (i / n) * TAU;
+    return [cx + Math.cos(a) * rx, cy + Math.sin(a) * ry, z];
+  });
+  const ellipseY = (y, cz, rx, rz, n) => Array.from({ length: n }, (_, i) => {
+    const a = (i / n) * TAU;
+    return [Math.cos(a) * rx, y, cz + Math.sin(a) * rz];
+  });
+
+  // Saucer, stacked top to bottom
+  loft([
+    [0.46, 0.05], [0.42, 0.13], [0.33, 0.26], [0.26, 0.58], [0.16, 0.86],
+    [0.05, 1.0], [-0.07, 0.96], [-0.2, 0.68], [-0.3, 0.36], [-0.36, 0.14]
+  ].map(([dy, s]) => ellipseY(1.0 + dy, 1.2, 2.3 * s, 2.05 * s, 36)), 3);
+
+  // Neck
+  loft([
+    [0.65, 0.68, 0.2, 0.1], [0.1, 0.42, 0.25, 0.22],
+    [-0.5, 0.08, 0.3, 0.32], [-1.05, -0.2, 0.34, 0.26]
+  ].map(([z, cy, rx, ry]) => ellipseZ(z, 0, cy, rx, ry, 12)), 2);
+
+  // Engineering hull
+  loft([
+    [0.42, -0.72, 0.2, 0.2], [0.26, -0.7, 0.44, 0.42], [-0.2, -0.64, 0.56, 0.52],
+    [-1.0, -0.54, 0.6, 0.5], [-2.0, -0.44, 0.54, 0.42], [-2.85, -0.34, 0.38, 0.28],
+    [-3.35, -0.28, 0.14, 0.11]
+  ].map(([z, cy, rx, ry]) => ellipseZ(z, 0, cy, rx, ry, 16)), 2);
+
+  // Deflector dish
+  [0.32, 0.22, 0.1].forEach((r) => loft([ellipseZ(0.44, 0, -0.72, r, r, 16)], 16));
+
+  // Nacelles and pylons
+  [-1, 1].forEach((side) => {
+    const nx = side * 1.85, ny = 0.34;
+    loft([
+      [-0.55, 0.02, 0.02], [-0.72, 0.13, 0.15], [-1.0, 0.2, 0.23], [-2.0, 0.21, 0.26],
+      [-3.2, 0.2, 0.25], [-3.65, 0.16, 0.2], [-3.72, 0.08, 0.1]
+    ].map(([z, rx, ry]) => ellipseZ(z, nx, ny, rx, ry, 12)), 2);
+    for (let k = 0; k < 4; k++) {
+      const t = k / 3;
+      seg([side * 0.42, -0.42, -1.75 - t * 0.7], [side * 1.75, 0.26, -2.05 - t * 0.7]);
+    }
+    seg([side * 0.42, -0.42, -1.75], [side * 0.42, -0.42, -2.45]);
+    seg([side * 1.75, 0.26, -2.05], [side * 1.75, 0.26, -2.75]);
+  });
+  const model = new Float32Array(segs);
+
+  /* ---------- Stars ---------- */
+  const stars = Array.from({ length: 420 }, () => ({
+    x: (Math.random() - 0.5) * 2.4,
+    y: (Math.random() - 0.5) * 2.4,
+    z: 0.08 + Math.random()
+  }));
+
+  /* ---------- Scene state ---------- */
+  let w = 1, h = 1, dpr = 1, focal = 1, cx = 0, cy = 0, vx = 0, vy = 0;
+  let mode = "rest"; // rest | voyage | warp | end
+  let index = 0, dwell = 0, held = 0, paused = false;
+  let yaw = 2.15, pitch = 0.22, warpT = 0, warpFromYaw = 0, warpToYaw = 0;
+  let last = 0, clock = 0;
+
+  function fit() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    w = innerWidth; h = innerHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    const wide = w >= 800;
+    cx = wide ? w * 0.66 : w * 0.5;
+    cy = wide ? h * 0.42 : h * 0.24;
+    focal = Math.min(wide ? w * 0.5 : w * 0.85, h * (wide ? 1.05 : 0.62));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = "#0b0703";
+    ctx.fillRect(0, 0, w, h);
+    if (mode !== "warp" && mode !== "end") { vx = cx; vy = cy; }
+  }
+
+  function drawStars(speed, dt) {
+    const streak = clamp(speed * 0.45, 0.002, 0.5);
+    ctx.lineCap = "round";
+    ctx.strokeStyle = speed > 0.25 ? "#fff1d9" : "#e6c48c";
+    for (const s of stars) {
+      if (!calm) s.z -= speed * dt;
+      if (s.z < 0.06) {
+        s.z = 1.08;
+        s.x = (Math.random() - 0.5) * 2.4;
+        s.y = (Math.random() - 0.5) * 2.4;
+      }
+      const k = Math.max(w, h) * 0.32;
+      const x1 = vx + (s.x / s.z) * k, y1 = vy + (s.y / s.z) * k;
+      const z2 = s.z + streak;
+      const x2 = vx + (s.x / z2) * k, y2 = vy + (s.y / z2) * k;
+      ctx.globalAlpha = clamp(1.15 - s.z) * 0.9 + 0.1;
+      ctx.lineWidth = clamp(1.5 - s.z, 0.5, 1.5);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2 + 0.5, y2 + 0.5);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawShip(stretch, push, glow) {
+    const cy1 = Math.cos(yaw), sy1 = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const paths = [new Path2D(), new Path2D(), new Path2D()];
+    const camera = 9.5 + push;
+    const project = (i, out) => {
+      const x = model[i], y = model[i + 1] - 0.15, z = model[i + 2] * (model[i + 2] > 0 ? 1 + stretch : 1 + stretch * 0.5);
+      const x1 = x * cy1 + z * sy1, z1 = -x * sy1 + z * cy1;
+      const y2 = y * cp - z1 * sp, z2 = y * sp + z1 * cp;
+      const depth = Math.max(0.4, camera + z2);
+      out[0] = vx + (x1 / depth) * focal;
+      out[1] = vy - (y2 / depth) * focal;
+      out[2] = z2;
+    };
+    const a = [0, 0, 0], b = [0, 0, 0];
+    for (let i = 0; i < model.length; i += 6) {
+      project(i, a); project(i + 3, b);
+      const mid = (a[2] + b[2]) / 2;
+      const bucket = mid < -0.7 ? 0 : mid < 0.9 ? 1 : 2;
+      paths[bucket].moveTo(a[0], a[1]);
+      paths[bucket].lineTo(b[0], b[1]);
+    }
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineCap = "round";
+    [[0, 0.95], [1, 0.58], [2, 0.26]].forEach(([k, alpha]) => {
+      ctx.strokeStyle = "#ffc45e";
+      ctx.globalAlpha = alpha * 0.16 * glow;
+      ctx.lineWidth = 3.2;
+      ctx.stroke(paths[k]);
+      ctx.globalAlpha = Math.min(1, alpha * glow);
+      ctx.lineWidth = 0.85;
+      ctx.stroke(paths[k]);
+    });
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  function flash(amount) {
+    if (amount <= 0) return;
+    const r = Math.max(w, h) * (0.2 + amount * 0.5);
+    const g = ctx.createRadialGradient(vx, vy, 0, vx, vy, r);
+    g.addColorStop(0, `rgba(255,248,232,${amount})`);
+    g.addColorStop(0.25, `rgba(255,196,94,${amount * 0.5})`);
+    g.addColorStop(1, "rgba(255,196,94,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  /* ---------- Log ---------- */
+  ENTRIES.forEach((entry, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "tick";
+    b.setAttribute("aria-label", `Log ${i + 1}: ${entry[0]}`);
+    b.addEventListener("click", () => show(i));
+    $("ticks").append(b);
+  });
+  const ticks = [...$("ticks").children];
+
+  function show(i) {
+    index = i; held = 0;
+    const [date, html] = ENTRIES[i];
+    $("log-meta").textContent = `Log ${String(i + 1).padStart(2, "0")} of ${ENTRIES.length}  ·  ${date}`;
+    $("log-text").innerHTML = html;
+    dwell = 4600 + html.replace(/<[^>]+>/g, "").length * 48;
+    $("prev").disabled = i === 0;
+    ticks.forEach((t, k) => {
+      t.style.setProperty("--fill", k < i ? 1 : 0);
+      if (k === i) t.setAttribute("aria-current", "step"); else t.removeAttribute("aria-current");
+    });
+  }
+
+  function panel(name) {
+    ["rest", "log", "end"].forEach((p) => { $(p).hidden = p !== name; });
+  }
+
+  function begin() {
+    mode = "voyage"; paused = calm;
+    $("pause").hidden = calm;
+    $("pause").textContent = "Pause";
+    vx = cx; vy = cy; yaw = 2.15; pitch = 0.22;
+    panel("log");
+    show(0);
+    $("next").focus({ preventScroll: true });
+  }
+
+  function warp() {
+    mode = "warp"; warpT = 0;
+    panel(null);
+    warpFromYaw = yaw;
+    warpToYaw = Math.round(yaw / TAU) * TAU;
+    if (calm) finish();
+  }
+
+  function finish() {
+    mode = "end";
+    panel("end");
+    $("end").scrollTop = 0;
+  }
+
+  $("engage").addEventListener("click", begin);
+  $("again").addEventListener("click", begin);
+  $("prev").addEventListener("click", () => show(Math.max(0, index - 1)));
+  $("next").addEventListener("click", () => (index < ENTRIES.length - 1 ? show(index + 1) : warp()));
+  $("pause").addEventListener("click", () => {
+    paused = !paused;
+    $("pause").textContent = paused ? "Resume" : "Pause";
+  });
+  addEventListener("resize", fit);
+
+  /* ---------- Frame ---------- */
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000 || 0, 0.05);
+    last = now; clock += dt;
+
+    let speed = 0.012, stretch = 0, push = 0, shipGlow = 1, burst = 0, showShip = true;
+
+    if (mode === "voyage") {
+      speed = 0.03;
+      if (!paused) {
+        held += dt * 1000;
+        ticks[index].style.setProperty("--fill", clamp(held / dwell));
+        if (held >= dwell) {
+          if (index < ENTRIES.length - 1) show(index + 1); else warp();
+        }
+      }
+    }
+
+    if (mode === "warp") {
+      warpT += dt;
+      const turn = ease(clamp(warpT / 2.4));
+      yaw = warpFromYaw + (warpToYaw - warpFromYaw) * turn;
+      pitch = 0.22 - 0.12 * turn;
+      vx = cx + (w / 2 - cx) * turn;
+      vy = cy + (h * 0.42 - cy) * turn;
+      speed = 0.03 + turn * 0.05;
+      const s = clamp((warpT - 2.4) / 0.55);
+      stretch = s * s * s * 16;
+      push = s * s * s * s * 120;
+      shipGlow = 1 + s;
+      if (warpT >= 2.95) {
+        showShip = false;
+        const after = warpT - 2.95;
+        burst = clamp(0.95 - after * 2.2);
+        speed = 1.9 * clamp(1.5 - after * 0.6) + 0.02;
+      }
+      if (warpT >= 4.9) finish();
+    }
+
+    if (mode === "end") { speed = 0.014; showShip = false; }
+
+    if (!calm && mode !== "warp") { yaw = 2.15 + Math.sin(clock * 0.1) * 0.4; pitch = 0.22 + Math.sin(clock * 0.21) * 0.07; }
+
+    ctx.fillStyle = calm ? "#0b0703" : "rgba(11, 7, 3, 0.42)";
+    ctx.fillRect(0, 0, w, h);
+    drawStars(speed, dt);
+    if (showShip) drawShip(stretch, push, shipGlow);
+    flash(burst);
+    requestAnimationFrame(frame);
+  }
+
+  fit();
+  drawStars(0, 0);
+  drawShip(0, 0, 1);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
